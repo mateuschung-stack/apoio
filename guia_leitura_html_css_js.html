@@ -1,0 +1,233 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+  .container { padding: 1.5rem 0; max-width: 720px; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .tab { padding: 8px 18px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: transparent; cursor: pointer; font-size: 14px; font-weight: 500; color: var(--color-text-secondary); transition: all 0.15s; }
+  .tab.active { border-color: transparent; color: var(--color-text-primary); }
+  .tab-html.active { background: #EEEDFE; color: #3C3489; }
+  .tab-css.active { background: #E1F5EE; color: #0F6E56; }
+  .tab-js.active { background: #FAEEDA; color: #633806; }
+  .section { display: none; }
+  .section.active { display: block; }
+  .code-block { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); padding: 1.25rem; margin-bottom: 1.25rem; font-family: var(--font-mono); font-size: 13px; line-height: 2; position: relative; overflow-x: auto; }
+  .code-line { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; border-radius: 6px; padding: 2px 6px; transition: background 0.12s; }
+  .code-line:hover { background: var(--color-background-primary); }
+  .code-line.highlighted { background: var(--color-background-primary); border-left: 3px solid; }
+  .code-line.hl-html { border-color: #534AB7; }
+  .code-line.hl-css { border-color: #0F6E56; }
+  .code-line.hl-js { border-color: #854F0B; }
+  .line-num { color: var(--color-text-tertiary); font-size: 12px; min-width: 20px; text-align: right; user-select: none; padding-top: 1px; }
+  .line-text { flex: 1; white-space: pre; }
+  .tooltip-box { background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-top: 12px; font-family: var(--font-sans); font-size: 14px; line-height: 1.6; }
+  .tooltip-box .tip-title { font-size: 13px; font-weight: 500; margin-bottom: 6px; }
+  .tooltip-box .tip-title.html { color: #534AB7; }
+  .tooltip-box .tip-title.css { color: #0F6E56; }
+  .tooltip-box .tip-title.js { color: #854F0B; }
+  .tooltip-box p { font-size: 13px; color: var(--color-text-secondary); }
+  .tooltip-box code { font-family: var(--font-mono); font-size: 12px; background: var(--color-background-secondary); padding: 1px 5px; border-radius: 4px; color: var(--color-text-primary); }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--color-text-secondary); }
+  .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .section-title { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+  .section-sub { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 1rem; line-height: 1.5; }
+  .hint { font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 12px; }
+
+  .kw-tag { color: #534AB7; font-weight: 500; }
+  .kw-attr { color: #185FA5; }
+  .kw-str { color: #3B6D11; }
+  .kw-prop { color: #185FA5; }
+  .kw-val { color: #854F0B; }
+  .kw-sel { color: #534AB7; }
+  .kw-fn { color: #854F0B; font-weight: 500; }
+  .kw-var { color: #185FA5; font-weight: 500; }
+  .kw-cmt { color: var(--color-text-tertiary); font-style: italic; }
+  .kw-str2 { color: #3B6D11; }
+  .kw-num { color: #993C1D; }
+</style>
+
+<div class="container">
+  <h2 class="sr-only">Guia interativo para leitura de HTML, CSS e JavaScript</h2>
+
+  <div class="tabs">
+    <button class="tab tab-html active" onclick="switchTab('html')">HTML</button>
+    <button class="tab tab-css" onclick="switchTab('css')">CSS</button>
+    <button class="tab tab-js" onclick="switchTab('js')">JavaScript</button>
+  </div>
+
+  <!-- HTML SECTION -->
+  <div class="section active" id="sec-html">
+    <p class="section-title">Como ler código HTML</p>
+    <p class="section-sub">HTML é a estrutura da página. Ele usa <strong style="font-weight:500">tags</strong> para marcar cada tipo de conteúdo. Clique em qualquer linha para entender o que ela faz.</p>
+    <p class="hint">Clique em uma linha para ver a explicação</p>
+
+    <div class="legend">
+      <div class="legend-item"><div class="dot" style="background:#534AB7"></div> Tag</div>
+      <div class="legend-item"><div class="dot" style="background:#185FA5"></div> Atributo</div>
+      <div class="legend-item"><div class="dot" style="background:#3B6D11"></div> Valor / Texto</div>
+    </div>
+
+    <div class="code-block" id="html-code">
+      <div class="code-line" onclick="showTip('html',0)"><span class="line-num">1</span><span class="line-text"><span class="kw-tag">&lt;!DOCTYPE html&gt;</span></span></div>
+      <div class="code-line" onclick="showTip('html',1)"><span class="line-num">2</span><span class="line-text"><span class="kw-tag">&lt;html</span> <span class="kw-attr">lang</span>=<span class="kw-str">"pt-BR"</span><span class="kw-tag">&gt;</span></span></div>
+      <div class="code-line" onclick="showTip('html',2)"><span class="line-num">3</span><span class="line-text">  <span class="kw-tag">&lt;head&gt;</span></span></div>
+      <div class="code-line" onclick="showTip('html',3)"><span class="line-num">4</span><span class="line-text">    <span class="kw-tag">&lt;title&gt;</span><span class="kw-str">Minha Página</span><span class="kw-tag">&lt;/title&gt;</span></span></div>
+      <div class="code-line" onclick="showTip('html',4)"><span class="line-num">5</span><span class="line-text">  <span class="kw-tag">&lt;/head&gt;</span></span></div>
+      <div class="code-line" onclick="showTip('html',5)"><span class="line-num">6</span><span class="line-text">  <span class="kw-tag">&lt;body&gt;</span></span></div>
+      <div class="code-line" onclick="showTip('html',6)"><span class="line-num">7</span><span class="line-text">    <span class="kw-tag">&lt;h1&gt;</span><span class="kw-str">Bem-vindo!</span><span class="kw-tag">&lt;/h1&gt;</span></span></div>
+      <div class="code-line" onclick="showTip('html',7)"><span class="line-num">8</span><span class="line-text">    <span class="kw-tag">&lt;p</span> <span class="kw-attr">class</span>=<span class="kw-str">"intro"</span><span class="kw-tag">&gt;</span><span class="kw-str">Olá, mundo!</span><span class="kw-tag">&lt;/p&gt;</span></span></div>
+      <div class="code-line" onclick="showTip('html',8)"><span class="line-num">9</span><span class="line-text">    <span class="kw-tag">&lt;a</span> <span class="kw-attr">href</span>=<span class="kw-str">"https://exemplo.com"</span><span class="kw-tag">&gt;</span><span class="kw-str">Clique aqui</span><span class="kw-tag">&lt;/a&gt;</span></span></div>
+      <div class="code-line" onclick="showTip('html',9)"><span class="line-num">10</span><span class="line-text">    <span class="kw-tag">&lt;img</span> <span class="kw-attr">src</span>=<span class="kw-str">"foto.jpg"</span> <span class="kw-attr">alt</span>=<span class="kw-str">"Uma foto"</span><span class="kw-tag"> /&gt;</span></span></div>
+      <div class="code-line" onclick="showTip('html',10)"><span class="line-num">11</span><span class="line-text">  <span class="kw-tag">&lt;/body&gt;</span></span></div>
+      <div class="code-line" onclick="showTip('html',11)"><span class="line-num">12</span><span class="line-text"><span class="kw-tag">&lt;/html&gt;</span></span></div>
+    </div>
+    <div class="tooltip-box" id="tip-html">
+      <p class="tip-title html">Selecione uma linha acima</p>
+      <p>Clique em qualquer linha do código para ver uma explicação detalhada sobre o que ela significa.</p>
+    </div>
+  </div>
+
+  <!-- CSS SECTION -->
+  <div class="section" id="sec-css">
+    <p class="section-title">Como ler código CSS</p>
+    <p class="section-sub">CSS define a aparência dos elementos HTML. Ele funciona com <strong style="font-weight:500">seletores</strong> (quem estilizar) e <strong style="font-weight:500">propriedades</strong> (como estilizar). Clique nas linhas para entender cada parte.</p>
+    <p class="hint">Clique em uma linha para ver a explicação</p>
+
+    <div class="legend">
+      <div class="legend-item"><div class="dot" style="background:#534AB7"></div> Seletor</div>
+      <div class="legend-item"><div class="dot" style="background:#185FA5"></div> Propriedade</div>
+      <div class="legend-item"><div class="dot" style="background:#854F0B"></div> Valor</div>
+    </div>
+
+    <div class="code-block" id="css-code">
+      <div class="code-line" onclick="showTip('css',0)"><span class="line-num">1</span><span class="line-text"><span class="kw-cmt">/* Estilo geral do corpo */</span></span></div>
+      <div class="code-line" onclick="showTip('css',1)"><span class="line-num">2</span><span class="line-text"><span class="kw-sel">body</span> {</span></div>
+      <div class="code-line" onclick="showTip('css',2)"><span class="line-num">3</span><span class="line-text">  <span class="kw-prop">background-color</span>: <span class="kw-val">#f0f0f0</span>;</span></div>
+      <div class="code-line" onclick="showTip('css',3)"><span class="line-num">4</span><span class="line-text">  <span class="kw-prop">font-family</span>: <span class="kw-val">Arial, sans-serif</span>;</span></div>
+      <div class="code-line" onclick="showTip('css',4)"><span class="line-num">5</span><span class="line-text">  <span class="kw-prop">margin</span>: <span class="kw-val">0</span>;</span></div>
+      <div class="code-line" onclick="showTip('css',5)"><span class="line-num">6</span><span class="line-text">}</span></div>
+      <div class="code-line" onclick="showTip('css',6)"><span class="line-num">7</span><span class="line-text"></span></div>
+      <div class="code-line" onclick="showTip('css',7)"><span class="line-num">8</span><span class="line-text"><span class="kw-sel">.intro</span> {</span></div>
+      <div class="code-line" onclick="showTip('css',8)"><span class="line-num">9</span><span class="line-text">  <span class="kw-prop">color</span>: <span class="kw-val">#333333</span>;</span></div>
+      <div class="code-line" onclick="showTip('css',9)"><span class="line-num">10</span><span class="line-text">  <span class="kw-prop">font-size</span>: <span class="kw-val">18px</span>;</span></div>
+      <div class="code-line" onclick="showTip('css',10)"><span class="line-num">11</span><span class="line-text">  <span class="kw-prop">padding</span>: <span class="kw-val">10px 20px</span>;</span></div>
+      <div class="code-line" onclick="showTip('css',11)"><span class="line-num">12</span><span class="line-text">  <span class="kw-prop">border-left</span>: <span class="kw-val">4px solid #534AB7</span>;</span></div>
+      <div class="code-line" onclick="showTip('css',12)"><span class="line-num">13</span><span class="line-text">}</span></div>
+    </div>
+    <div class="tooltip-box" id="tip-css">
+      <p class="tip-title css">Selecione uma linha acima</p>
+      <p>Clique em qualquer linha do código para ver uma explicação detalhada sobre o que ela significa.</p>
+    </div>
+  </div>
+
+  <!-- JS SECTION -->
+  <div class="section" id="sec-js">
+    <p class="section-title">Como ler código JavaScript</p>
+    <p class="section-sub">JavaScript adiciona <strong style="font-weight:500">comportamento</strong> à página. Ele pode criar variáveis, funções e reagir a ações do usuário. Clique nas linhas para ver o que cada parte faz.</p>
+    <p class="hint">Clique em uma linha para ver a explicação</p>
+
+    <div class="legend">
+      <div class="legend-item"><div class="dot" style="background:#185FA5"></div> Variável</div>
+      <div class="legend-item"><div class="dot" style="background:#854F0B"></div> Função</div>
+      <div class="legend-item"><div class="dot" style="background:#3B6D11"></div> Texto / Valor</div>
+    </div>
+
+    <div class="code-block" id="js-code">
+      <div class="code-line" onclick="showTip('js',0)"><span class="line-num">1</span><span class="line-text"><span class="kw-cmt">// Declara uma variável</span></span></div>
+      <div class="code-line" onclick="showTip('js',1)"><span class="line-num">2</span><span class="line-text"><span class="kw-var">let</span> nome = <span class="kw-str2">"Ana"</span>;</span></div>
+      <div class="code-line" onclick="showTip('js',2)"><span class="line-num">3</span><span class="line-text"><span class="kw-var">const</span> idade = <span class="kw-num">25</span>;</span></div>
+      <div class="code-line" onclick="showTip('js',3)"><span class="line-num">4</span><span class="line-text"></span></div>
+      <div class="code-line" onclick="showTip('js',4)"><span class="line-num">5</span><span class="line-text"><span class="kw-cmt">// Função que exibe uma saudação</span></span></div>
+      <div class="code-line" onclick="showTip('js',5)"><span class="line-num">6</span><span class="line-text"><span class="kw-var">function</span> <span class="kw-fn">saudar</span>(pessoa) {</span></div>
+      <div class="code-line" onclick="showTip('js',6)"><span class="line-num">7</span><span class="line-text">  <span class="kw-fn">console</span>.<span class="kw-fn">log</span>(<span class="kw-str2">"Olá, "</span> + pessoa);</span></div>
+      <div class="code-line" onclick="showTip('js',7)"><span class="line-num">8</span><span class="line-text">}</span></div>
+      <div class="code-line" onclick="showTip('js',8)"><span class="line-num">9</span><span class="line-text"></span></div>
+      <div class="code-line" onclick="showTip('js',9)"><span class="line-num">10</span><span class="line-text"><span class="kw-cmt">// Chamada da função + evento</span></span></div>
+      <div class="code-line" onclick="showTip('js',10)"><span class="line-num">11</span><span class="line-text"><span class="kw-fn">saudar</span>(nome);</span></div>
+      <div class="code-line" onclick="showTip('js',11)"><span class="line-num">12</span><span class="line-text"><span class="kw-var">if</span> (idade >= <span class="kw-num">18</span>) {</span></div>
+      <div class="code-line" onclick="showTip('js',12)"><span class="line-num">13</span><span class="line-text">  <span class="kw-fn">console</span>.<span class="kw-fn">log</span>(<span class="kw-str2">"Maior de idade"</span>);</span></div>
+      <div class="code-line" onclick="showTip('js',13)"><span class="line-num">14</span><span class="line-text">}</span></div>
+    </div>
+    <div class="tooltip-box" id="tip-js">
+      <p class="tip-title js">Selecione uma linha acima</p>
+      <p>Clique em qualquer linha do código para ver uma explicação detalhada sobre o que ela significa.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const tips = {
+  html: [
+    { title: "Linha 1 — Declaração do tipo de documento", text: "A tag <code>&lt;!DOCTYPE html&gt;</code> avisa ao navegador que este arquivo segue as regras do HTML5. Deve ser sempre a <strong style='font-weight:500'>primeira linha</strong> do arquivo." },
+    { title: "Linha 2 — Tag raiz com atributo de idioma", text: "<code>&lt;html&gt;</code> é o elemento que envolve tudo. O atributo <code>lang=\"pt-BR\"</code> indica que o conteúdo está em português do Brasil — isso ajuda leitores de tela e mecanismos de busca." },
+    { title: "Linha 3 — Início do cabeçalho", text: "<code>&lt;head&gt;</code> contém informações sobre a página que <strong style='font-weight:500'>não aparecem visualmente</strong>, como título da aba, links para CSS e configurações." },
+    { title: "Linha 4 — Título da aba do navegador", text: "O texto dentro de <code>&lt;title&gt;...&lt;/title&gt;</code> aparece na aba do navegador e nos resultados de busca do Google. Importante para SEO!" },
+    { title: "Linha 5 — Fechamento do cabeçalho", text: "Toda tag aberta com <code>&lt;head&gt;</code> precisa ser fechada com <code>&lt;/head&gt;</code>. A barra <code>/</code> indica que é uma tag de fechamento." },
+    { title: "Linha 6 — Início do corpo da página", text: "<code>&lt;body&gt;</code> contém tudo que o usuário vai <strong style='font-weight:500'>ver e interagir</strong> na página: textos, imagens, botões, links, etc." },
+    { title: "Linha 7 — Título principal (h1)", text: "<code>&lt;h1&gt;</code> é o <strong style='font-weight:500'>título mais importante</strong> da página. Existem níveis h1 até h6 — quanto maior o número, menor a importância e o tamanho visual." },
+    { title: "Linha 8 — Parágrafo com classe", text: "<code>&lt;p&gt;</code> define um parágrafo de texto. O atributo <code>class=\"intro\"</code> é um <strong style='font-weight:500'>nome identificador</strong> que o CSS usa para aplicar estilos específicos a este elemento." },
+    { title: "Linha 9 — Link (âncora)", text: "<code>&lt;a&gt;</code> cria um <strong style='font-weight:500'>link clicável</strong>. O atributo <code>href</code> define o destino. O texto entre as tags é o que o usuário vê e clica." },
+    { title: "Linha 10 — Imagem (tag sem fechamento)", text: "<code>&lt;img /&gt;</code> insere uma imagem. <code>src</code> aponta para o arquivo da imagem e <code>alt</code> é uma <strong style='font-weight:500'>descrição alternativa</strong> para acessibilidade. Note que não precisa de tag de fechamento separada." },
+    { title: "Linha 11 — Fechamento do body", text: "Fecha o <code>&lt;body&gt;</code>. Todo conteúdo visível da página deve estar entre <code>&lt;body&gt;</code> e <code>&lt;/body&gt;</code>." },
+    { title: "Linha 12 — Fechamento do html", text: "Fecha o elemento raiz <code>&lt;html&gt;</code>. Esta é sempre a <strong style='font-weight:500'>última linha</strong> de um arquivo HTML bem formado." },
+  ],
+  css: [
+    { title: "Linha 1 — Comentário", text: "Tudo entre <code>/*</code> e <code>*/</code> é um <strong style='font-weight:500'>comentário</strong> — o navegador ignora esse texto. É usado para explicar o código para outros desenvolvedores (ou para você mesmo no futuro)." },
+    { title: "Linha 2 — Seletor de elemento", text: "<code>body</code> é um <strong style='font-weight:500'>seletor de elemento</strong> — ele mira diretamente na tag HTML <code>&lt;body&gt;</code>. O bloco <code>{ }</code> que segue contém todas as regras de estilo para ele." },
+    { title: "Linha 3 — Cor de fundo", text: "<code>background-color</code> define a cor de fundo. O valor <code>#f0f0f0</code> é um <strong style='font-weight:500'>código hexadecimal</strong> de cor — um cinza bem claro. Você também pode usar nomes como <code>red</code> ou <code>blue</code>." },
+    { title: "Linha 4 — Família de fontes", text: "<code>font-family</code> escolhe a <strong style='font-weight:500'>tipografia do texto</strong>. A vírgula lista alternativas: se o navegador não tiver <code>Arial</code>, usará qualquer fonte <code>sans-serif</code>." },
+    { title: "Linha 5 — Margem zero", text: "<code>margin: 0</code> remove o espaço externo padrão do navegador ao redor do corpo da página. Isso é comum para garantir que a página começa exatamente da borda." },
+    { title: "Linha 6 — Fim do bloco", text: "A chave <code>}</code> fecha o bloco de regras do seletor <code>body</code>. Tudo que estava entre <code>{</code> e <code>}</code> pertence a esse seletor." },
+    { title: "Linha 7 — Linha vazia", text: "Linhas em branco são ignoradas pelo navegador, mas usadas por desenvolvedores para <strong style='font-weight:500'>organizar e separar</strong> visualmente blocos de código." },
+    { title: "Linha 8 — Seletor de classe", text: "O ponto <code>.</code> antes de <code>intro</code> indica um <strong style='font-weight:500'>seletor de classe</strong>. Ele afeta qualquer elemento HTML que tenha <code>class=\"intro\"</code> — como o <code>&lt;p class=\"intro\"&gt;</code> do HTML." },
+    { title: "Linha 9 — Cor do texto", text: "<code>color</code> define a cor do <strong style='font-weight:500'>texto</strong> (diferente de <code>background-color</code> que é o fundo). O valor <code>#333333</code> é um cinza escuro, mais suave que preto puro." },
+    { title: "Linha 10 — Tamanho da fonte", text: "<code>font-size: 18px</code> define o <strong style='font-weight:500'>tamanho do texto</strong>. <code>px</code> significa pixels. Você também pode usar <code>rem</code>, <code>em</code> ou <code>%</code> para tamanhos relativos." },
+    { title: "Linha 11 — Espaçamento interno (padding)", text: "<code>padding: 10px 20px</code> adiciona <strong style='font-weight:500'>espaço interno</strong> ao elemento. Dois valores significam: 10px em cima/baixo e 20px na esquerda/direita. O conteúdo fica mais afastado das bordas." },
+    { title: "Linha 12 — Borda lateral decorativa", text: "<code>border-left</code> cria uma borda apenas no <strong style='font-weight:500'>lado esquerdo</strong>: 4px de espessura, estilo sólido, cor roxa. Muito usado para destacar citações ou seções especiais." },
+    { title: "Linha 13 — Fim do bloco .intro", text: "Fecha o bloco de estilos da classe <code>.intro</code>. Todas as propriedades definidas entre as chaves se aplicam somente a elementos com essa classe." },
+  ],
+  js: [
+    { title: "Linha 1 — Comentário de linha única", text: "O <code>//</code> inicia um <strong style='font-weight:500'>comentário de uma linha</strong>. O JavaScript ignora tudo após <code>//</code> até o final da linha. Usado para explicar o que o código faz." },
+    { title: "Linha 2 — Variável let (mutável)", text: "<code>let</code> declara uma variável que <strong style='font-weight:500'>pode mudar</strong> de valor depois. <code>nome</code> é o identificador e <code>\"Ana\"</code> é o valor inicial — uma <em>string</em> (texto), sempre entre aspas." },
+    { title: "Linha 3 — Constante (imutável)", text: "<code>const</code> declara uma <strong style='font-weight:500'>constante</strong> — um valor que não pode ser alterado depois de definido. Use para valores que não devem mudar, como a data de nascimento ou o número de pernas de um cachorro." },
+    { title: "Linha 4 — Linha vazia", text: "Linhas em branco organizam o código visualmente e separam blocos de lógica. O JavaScript as ignora completamente." },
+    { title: "Linha 5 — Comentário antes da função", text: "Comentários antes de funções são muito comuns — eles documentam o <strong style='font-weight:500'>propósito da função</strong> antes mesmo de você ler o código dela." },
+    { title: "Linha 6 — Declaração de função", text: "<code>function</code> cria um <strong style='font-weight:500'>bloco reutilizável de código</strong>. <code>saudar</code> é o nome da função. <code>pessoa</code> dentro dos parênteses é um <em>parâmetro</em> — um valor que ela recebe para trabalhar." },
+    { title: "Linha 7 — console.log (exibir no console)", text: "<code>console.log()</code> imprime uma mensagem no <strong style='font-weight:500'>console do desenvolvedor</strong> (F12 no navegador). O operador <code>+</code> une duas strings. Essencial para testar e depurar código." },
+    { title: "Linha 8 — Fechamento da função", text: "A chave <code>}</code> fecha o corpo da função. Tudo entre <code>{</code> e <code>}</code> é executado quando a função é chamada." },
+    { title: "Linha 9 — Linha vazia", text: "Separação visual entre blocos de código. Não afeta a execução." },
+    { title: "Linha 10 — Comentário descritivo", text: "Este comentário explica que as próximas linhas envolvem <strong style='font-weight:500'>chamadas de função e estruturas condicionais</strong>. Bom hábito para código mais longo." },
+    { title: "Linha 11 — Chamada da função", text: "<code>saudar(nome)</code> <strong style='font-weight:500'>executa a função</strong> <code>saudar</code>, passando o valor de <code>nome</code> (que é <code>\"Ana\"</code>) como argumento. O resultado seria: <em>Olá, Ana</em> no console." },
+    { title: "Linha 12 — Estrutura condicional if", text: "<code>if</code> executa um bloco de código <strong style='font-weight:500'>somente se a condição for verdadeira</strong>. <code>idade >= 18</code> significa: se a idade for maior ou igual a 18. O <code>>=</code> é um operador de comparação." },
+    { title: "Linha 13 — Código dentro do if", text: "Esta linha só é executada <strong style='font-weight:500'>se a condição do if for verdadeira</strong>. Como <code>idade</code> é 25 e 25 ≥ 18, o console vai exibir <em>Maior de idade</em>." },
+    { title: "Linha 14 — Fechamento do if", text: "Fecha o bloco do <code>if</code>. Todo código entre as chaves do <code>if</code> só roda quando a condição é atendida." },
+  ]
+};
+
+let currentHighlight = { type: null, index: null };
+
+function showTip(type, index) {
+  const tip = tips[type][index];
+  if (!tip) return;
+  const box = document.getElementById('tip-' + type);
+  const colorClass = type;
+  box.innerHTML = `<p class="tip-title ${colorClass}">${tip.title}</p><p>${tip.text}</p>`;
+
+  const codeId = type + '-code';
+  const lines = document.getElementById(codeId).querySelectorAll('.code-line');
+  lines.forEach((l, i) => {
+    l.classList.remove('highlighted', 'hl-html', 'hl-css', 'hl-js');
+    if (i === index) {
+      l.classList.add('highlighted', 'hl-' + type);
+    }
+  });
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelector('.tab-' + tab).classList.add('active');
+  document.getElementById('sec-' + tab).classList.add('active');
+}
+</script>
